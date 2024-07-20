@@ -12,8 +12,8 @@ class Database():
 
         db = SQLDatabase.from_uri(f"mysql+pymysql://{self.db_user}:{self.db_password}@{self.db_host}/{self.db_name}")
 
-        print(db.dialect)
-        print(db.get_usable_table_names())
-        print(db.table_info)
+        # print(db.dialect)
+        # print(db.get_usable_table_names())
+        # print(db.table_info)
 
         return db

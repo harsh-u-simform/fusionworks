@@ -11,20 +11,32 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder,FewSh
 from langchain_community.vectorstores import Chroma
 from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_openai import OpenAIEmbeddings
+from langchain_core.pydantic_v1 import BaseModel, Field
+from typing import List
+import pandas as pd
+from langchain.memory import ChatMessageHistory
+import requests
+from langchain.chains.openai_tools import create_extraction_chain_pydantic
+import os
+from dotenv import load_dotenv
+
+class Table(BaseModel):
+    """Table in SQL database."""
+
+    name: str = Field(description="Name of table in SQL database.")
 
 class LangchainHelper:
 
     def __init__(self) -> None:
-        os.environ["GOOGLE_API_KEY"] = 'AIzaSyDKqBlqQwWW7DglNoXENi1VnQlW6vWT8Es'
-        os.environ['OPENAI_API_KEY'] = 'sk-proj-1oj10nL0ENsfYozBIonvT3BlbkFJsYl9511dnkP7mZueTeVP'
-        os.environ['LANGCHAIN_API_KEY'] = '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'
-        os.environ['LANGCHAIN_TRACING_V2'] = 'true'
+        load_dotenv()
+        # os.environ["GOOGLE_API_KEY"] = 'AIzaSyDKqBlqQwWW7DglNoXENi1VnQlW6vWT8Es'
+        # os.environ['OPENAI_API_KEY'] = 'sk-proj-1oj10nL0ENsfYozBIonvT3BlbkFJsYl9511dnkP7mZueTeVP'
+        # os.environ['LANGCHAIN_API_KEY'] = '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'
+        # os.environ['LANGCHAIN_TRACING_V2'] = 'true'
 
     def process_propt(self, request):
 
         prompt = request.POST.get('prompt')
-
-        print(prompt)
 
         db = Database().get_db(request)
 
@@ -39,7 +51,17 @@ class LangchainHelper:
 
         rephrase_answer = self.rephrase_answer()
 
+        # chain = (
+        #     RunnablePassthrough.assign(query=generate_query).assign(
+        #         result=itemgetter("query") | execute_query
+        #     )
+        #     | rephrase_answer
+        # )
+
+        select_table = self.get_relative_potential_database()
+
         chain = (
+            RunnablePassthrough.assign(table_names_to_use=select_table) |
             RunnablePassthrough.assign(query=generate_query).assign(
                 result=itemgetter("query") | execute_query
             )
@@ -103,7 +125,40 @@ class LangchainHelper:
 
         return final_prompt
 
+    def get_table_details(self):
+        # Read the CSV file into a DataFrame
+        table_description = pd.read_csv("/Users/harsh.ughreja/Documents/codefest/fusionworks/static/database_table_descriptions.csv")
+        table_docs = []
 
+        # Iterate over the DataFrame rows to create Document objects
+        table_details = ""
+        for index, row in table_description.iterrows():
+            table_details = table_details + "Table Name:" + row['Table'] + "\n" + "Table Description:" + row['Description'] + "\n\n"
+
+        return table_details
+
+    def get_relative_potential_database(self):
+        table_details = self.get_table_details()
+
+        print(table_details)
+
+        table_details_prompt = f"""Return the names of ALL the SQL tables that MIGHT be relevant to the user question. \
+        The tables are:
+
+        {table_details}
+
+        Remember to include ALL POTENTIALLY RELEVANT tables, even if you're not sure that they're needed."""
+
+        table_chain = create_extraction_chain_pydantic(Table, self.llm, system_message=table_details_prompt)
+
+        select_table = {"input": itemgetter("question")} | create_extraction_chain_pydantic(Table, self.llm, system_message=table_details_prompt) | self.get_tables
+
+        return select_table
+
+    def get_tables(self, tables: List[Table]) -> List[str]:
+        tables  = [table.name for table in tables]
+
+        return tables
 
 examples = [
      {

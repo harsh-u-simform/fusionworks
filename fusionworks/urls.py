@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import *
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('messaging', include('messaging.urls')),
+    path('health-check', csrf_exempt(AppHealth.as_view()), name='app helath'),
 ]
