@@ -83,12 +83,33 @@ class LangchainHelper:
 
         history = ChatMessageHistory()
         
-        # chats = [{'ui': }]
+        # chats = [
+        #     {'sender': 'human', 'content': 'How many cutomers with order count more than 5'},
+        #     {'sender': 'ai', 'content': 'There are 2 customers with an order count of more than 5.'},
+        # ]
+
+        # for chat in chats:
+        #     if chat['sender'] == 'human':
+        #         history.add_user_message(chat['content'])
+        #     else:
+        #         history.add_ai_message(chat['content'])
+
+        # print(history.messages)
 
         # response = chain.invoke({
         #     'question': prompt, 
-        #     "messages": "[HumanMessage(content=''), AIMessage(content='There are 2 customers with an order count of more than 5.')]"
-        #     })
+        #     "messages": history.messages,
+        # })
+        # history.add_user_message('How many cutomers with order count more than 5')
+        # response = chain.invoke({"question": 'How many cutomers with order count more than 5',"messages":history.messages})
+        # print(response)
+        # history.add_ai_message(response)
+
+        # history.add_user_message('Can you list there name?')
+        # response = chain.invoke({"question": 'Can you list there name?',"messages":history.messages})
+        # history.add_ai_message(response)
+        # print(response)
+
         response = chain.invoke({'question': prompt})
 
         # self.save_history(prompt, response)
@@ -150,7 +171,7 @@ class LangchainHelper:
 
     def get_table_details(self):
         # Read the CSV file into a DataFrame
-        table_description = pd.read_csv("/Users/harsh.ughreja/Documents/codefest/fusionworks/static/database_table_descriptions.csv")
+        table_description = pd.read_csv("static/database_table_descriptions.csv")
         table_docs = []
 
         # Iterate over the DataFrame rows to create Document objects
