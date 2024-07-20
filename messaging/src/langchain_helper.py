@@ -1,4 +1,4 @@
-import os
+import os, pickle
 from langchain.chains import create_sql_query_chain
 from langchain_openai import ChatOpenAI
 from langchain_community.tools.sql_database.tool import QuerySQLDataBaseTool
@@ -17,8 +17,19 @@ import pandas as pd
 from langchain.memory import ChatMessageHistory
 import requests
 from langchain.chains.openai_tools import create_extraction_chain_pydantic
-import os
 from dotenv import load_dotenv
+from .chat_history import ChatHistory
+from langchain.memory import ChatMessageHistory
+from messaging.models import *
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    FunctionMessage,
+    HumanMessage,
+    SystemMessage,
+    ToolMessage,
+)
+
 
 class Table(BaseModel):
     """Table in SQL database."""
@@ -29,6 +40,22 @@ class LangchainHelper:
 
     def __init__(self) -> None:
         load_dotenv()
+        self.file_path = 'history_object.pickle'
+        # self.load_history()
+
+    def load_history(self):
+
+        chats = None
+        
+        if os.path.exists(self.file_path):
+            with open(self.file_path, 'rb') as file:
+                chat_history = pickle.load(file)
+                print(chat_history)
+            self.chat_history = chat_history
+            print(self.chat_history.messaging_history)
+        else:
+            chats = ChatMessageHistory()
+            self.chat_history = ChatHistory(chat_history=chats)
 
     def process_propt(self, request):
 
@@ -42,17 +69,7 @@ class LangchainHelper:
 
         execute_query = QuerySQLDataBaseTool(db=db)
 
-        # chain = generate_query | execute_query
-        # self.response = chain.invoke({'question': prompt})
-
         rephrase_answer = self.rephrase_answer()
-
-        # chain = (
-        #     RunnablePassthrough.assign(query=generate_query).assign(
-        #         result=itemgetter("query") | execute_query
-        #     )
-        #     | rephrase_answer
-        # )
 
         select_table = self.get_relative_potential_database()
 
@@ -64,7 +81,17 @@ class LangchainHelper:
             | rephrase_answer
         )
 
+        history = ChatMessageHistory()
+        
+        # chats = [{'ui': }]
+
+        # response = chain.invoke({
+        #     'question': prompt, 
+        #     "messages": "[HumanMessage(content=''), AIMessage(content='There are 2 customers with an order count of more than 5.')]"
+        #     })
         response = chain.invoke({'question': prompt})
+
+        # self.save_history(prompt, response)
 
         return {
             "response": response,
@@ -155,6 +182,21 @@ class LangchainHelper:
         tables  = [table.name for table in tables]
 
         return tables
+
+    def save_history(self, user_message, ai_message):
+
+        # ChatHistoryRecords.objects.all().delete()
+        # serialized_data = pickle.dumps(self.chat_history.messaging_history)
+        # chat_history_object = ChatHistoryRecords(
+        #     data=serialized_data
+        # )
+
+        # chat_history_object.save()
+
+        # print(chat_history_object)
+
+        with open(self.file_path, 'wb') as file:
+            pickle.dump(self.chat_history, file)
 
 examples = [
      {

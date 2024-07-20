@@ -3,8 +3,8 @@ from langchain.memory import ChatMessageHistory
 
 class ChatHistory():
 
-    def __init__(self, chat_history):
-        self.messaging_history = chat_history
+    def __init__(self):
+        self.messaging_history = ChatMessageHistory()
 
     def add_new_message(self, request, user_message, ai_message):
 
