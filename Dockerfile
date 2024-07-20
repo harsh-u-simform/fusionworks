@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/python:3.8-slim
+FROM public.ecr.aws/docker/library/python:3.12.4-slim
 
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
