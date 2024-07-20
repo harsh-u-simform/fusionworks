@@ -29,10 +29,6 @@ class LangchainHelper:
 
     def __init__(self) -> None:
         load_dotenv()
-        # os.environ["GOOGLE_API_KEY"] = 'AIzaSyDKqBlqQwWW7DglNoXENi1VnQlW6vWT8Es'
-        # os.environ['OPENAI_API_KEY'] = 'sk-proj-1oj10nL0ENsfYozBIonvT3BlbkFJsYl9511dnkP7mZueTeVP'
-        # os.environ['LANGCHAIN_API_KEY'] = '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'
-        # os.environ['LANGCHAIN_TRACING_V2'] = 'true'
 
     def process_propt(self, request):
 
