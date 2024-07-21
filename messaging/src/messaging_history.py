@@ -12,7 +12,7 @@ class MessagingHistory:
         }
         headers = {
             "Content-Type": "application/json",
-            "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJiaW5hcnkuYmFyazFAZW1haWwuY29tIiwiaWF0IjoxNzIxNTIyOTE4LCJleHAiOjE3MjE2MDkzMTh9.zzBp7MKHDkcH4ySG_3L4mb3qddRmfmcjhhnC3Qq2gqs"
+            "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaW5hcnkuYmFyazFAZW1haWwuY29tIiwiaWF0IjoxNzIxNTQ2NTQ5LCJleHAiOjE3MjE2MzI5NDl9.yBevQwmiXpP0TjUkw2I6zZLhvZ0aRF_QRgoQDEV_HAc"
         }
 
         response = requests.get(url, params=params, headers=headers)
@@ -48,5 +48,4 @@ class MessagingHistory:
         }
 
         response = requests.put(url, json=payload, headers=headers)
-        print(response)
         return True

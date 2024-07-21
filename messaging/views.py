@@ -7,10 +7,14 @@ class AskMe(APIView):
 
     def get(self, request, format=None):
         """
-        Process the user promt
+        Process the user prompt
         """
 
-        response = LangchainHelper().process_propt(request)
+        try:
+            response = LangchainHelper().process_propt(request)
+        except BaseException as e:
+            print(e)
+            response = "Sorry for inconvenience. Currenly we are unable to find the answer of your query."
 
         return Response({
             'data': response,
