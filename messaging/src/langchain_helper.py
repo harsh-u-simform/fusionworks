@@ -183,7 +183,7 @@ class LangchainHelper:
     def rephrase_answer(self):
 
         answer_prompt = PromptTemplate.from_template(
-            """Given the following user question, corresponding FusionWorks, and FusionWorks software, answer the user question keeping in mind that if SQL Result is longer than 20 entires then just take the top 5 entries and mention total, and no matter what never return SQL Query in the answer.
+            """Given the following user question, corresponding FusionWorks, and FusionWorks software and no matter what never return SQL Query in the answer.
 
         Question: {question}
         SQL Query: {query}
