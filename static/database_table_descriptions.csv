@@ -1,0 +1,11 @@
+Table,Description
+project,"Project information about the different project details, including a id, title, description, status, startDate, endDate, clientName and progress."
+chat_history,"Contains details of each chat history, including id, createdAt, updateAt, deleteAt, query_type, mesages and userid."
+dsu,"Holds data for the user daily status update, including id, createdAt, updatedAt, deletedAt, postDate, blockers, todayUpdate, tomorrowWork, userId and projectId. "
+event,"displays a upcoming events and holidays including id, createdAt, updatedAt, deletedAt, title, description, startDate, endDate, startTime, endTime, emode and etype."
+meal_pass_outlet,"Record a meal pass outlet including id, createdAt, updatedAt, deletedAt, outlet_name, address1, address2, area, city, pincode, state, new_category, and enable_with_bqr_code."
+online_merchant,"Captures data for online merchant including id, createdAt, updatedAt, deletedAt, brand_name, available_at, category, medium, website, restro_pass."
+project,"Detailed information regarding project including id, createdAt, deletedAt, title, description, status, startDate, endDate, clientName, progress."
+skill,"Add the skills using the id, stype, category, level, skill, status, comment, userId, createdAt, updateAt, deletedAt."
+user,"Describe individual user including id, createdAt, updatedAt, deletedAt, full_name, email, phone_number, employee_code, dob, designation, department, password."
+user_projects,"This table connects projects to specific user using project_id and user_id."
