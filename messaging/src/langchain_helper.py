@@ -33,12 +33,12 @@ from .messaging_history import MessagingHistory
 
 examples = [
      {
-         "input": "List all customers in France with a credit limit over 20,000.",
-         "query": "SELECT * FROM customers WHERE country = 'France' AND creditLimit > 20000;"
+         "input": "Total users",
+         "query": "select COUNT(*) FROM user;"
      },
      {
-         "input": "Get the highest payment amount made by any customer.",
-         "query": "SELECT MAX(amount) FROM payments;"
+         "input": "Get projects with title abc",
+         "query": "select * from project where title LIKE '%abc%';"
      },
 ]
 
