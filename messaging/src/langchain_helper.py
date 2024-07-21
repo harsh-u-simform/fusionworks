@@ -104,14 +104,6 @@ class LangchainHelper:
 
         chats = MessagingHistory().get_chats(request)
 
-        # print('Generating results...')
-        # chats = [
-        #     {'sender': 'human', 'content': 'How many cutomers with order count more than 5'},
-        #     {'sender': 'ai', 'content': 'There are 2 customers with an order count of more than 5.'},
-        # ]
-
-        print(chats)
-
         for chat in chats:
             if chat['sender'] == 'Human':
                 history.add_user_message(chat['message'])
@@ -122,7 +114,9 @@ class LangchainHelper:
 
         # MessagingHistory().add_new_chat(request, prompt, response)
 
-        return response
+        return {
+            "response": response,
+        }
 
     def get_relative_potential_database(self):
 
