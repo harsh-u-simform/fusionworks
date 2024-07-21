@@ -185,6 +185,10 @@ class LangchainHelper:
         answer_prompt = PromptTemplate.from_template(
             """Given the following user question, corresponding FusionWorks, and FusionWorks software and no matter what never return SQL Query in the answer.
 
+        If there is no data in SQL Result or it is empty array than answer accordingly like We haven't found anything matching your search or No data found in system.
+        Always consider SQL Result in answer and it should be relative to question.
+
+
         Question: {question}
         SQL Query: {query}
         SQL Result: {result}

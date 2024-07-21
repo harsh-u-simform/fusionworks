@@ -6,13 +6,16 @@ class MessagingHistory:
         pass
 
     def get_chats(self, request):
+
+        cookies = request.COOKIES
+
         url = "https://fusionworks-dev-api.cloudjet.site/chat/history"
         params = {
             "queryType": "database",
         }
         headers = {
             "Content-Type": "application/json",
-            "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaW5hcnkuYmFyazFAZW1haWwuY29tIiwiaWF0IjoxNzIxNTQ2NTQ5LCJleHAiOjE3MjE2MzI5NDl9.yBevQwmiXpP0TjUkw2I6zZLhvZ0aRF_QRgoQDEV_HAc"
+            "Cookie": f"jwt={cookies.get('jwt')}"
         }
 
         response = requests.get(url, params=params, headers=headers)
@@ -28,6 +31,8 @@ class MessagingHistory:
 
     def add_new_chat(self, request, user_msg, ai_msg):
 
+        cookies = request.COOKIES
+        
         url = "https://fusionworks-dev-api.cloudjet.site/chat/history"
         payload = {
             "queryType": "database",
@@ -44,7 +49,7 @@ class MessagingHistory:
         }
         headers = {
             "Content-Type": "application/json",
-            "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaW5hcnkuYmFyazFAZW1haWwuY29tIiwiaWF0IjoxNzIxNTQ2NTQ5LCJleHAiOjE3MjE2MzI5NDl9.yBevQwmiXpP0TjUkw2I6zZLhvZ0aRF_QRgoQDEV_HAc"
+            "Cookie": f"jwt={cookies.get('jwt')}"
         }
 
         response = requests.put(url, json=payload, headers=headers)
