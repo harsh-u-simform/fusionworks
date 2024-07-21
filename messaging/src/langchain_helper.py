@@ -62,17 +62,7 @@ class LangchainHelper:
 
         final_prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", """You are a MySQL expert. Given an input question, create a syntactically correct MySQL query to run. Unless otherwise specificed.\n\nHere is the relevant table info: {table_info}\n\nBelow are a number of examples of questions and their corresponding SQL queries. Those examples are just for referecne and hsould be considered while answering follow up questions
-                
-                Objective: Generate an SQL query based on the following guidelines. Ensure the query adheres strictly to the rules outlined below.
-
-                Guidelines:
-                Strictly No Dummy Data: Do not add any dummy data or placeholders in the query.
-                Strong Relationships: Ensure strong and accurate relationships between tables. Only include tables that have a meaningful connection based on primary and foreign keys or logical relationships.
-                Relevance: If it seems that no tables are relevant to the query, do not attempt to force any tables into the query. Only include tables that are essential and logically connected to the purpose of the query.
-                Clarity and Precision: Write clear and precise SQL statements. Avoid ambiguity and ensure the query is optimized for readability and performance.
-                Make sure to only generate select query and there will be no sql injection allowed at all.
-                """),
+                ("system", "You are a MySQL expert. Given an input question, create a syntactically correct MySQL query to run. Unless otherwise specificed.\n\nHere is the relevant table info: {table_info}\n\nBelow are a number of examples of questions and their corresponding SQL queries. Those examples are just for referecne and hsould be considered while answering follow up questions"),
                 few_shot_prompt,
                 MessagesPlaceholder(variable_name="messages"),
                 ("human", "{input}"),
@@ -193,8 +183,7 @@ class LangchainHelper:
     def rephrase_answer(self):
 
         answer_prompt = PromptTemplate.from_template(
-            """Given the following user question, corresponding FusionWorks, and FusionWorks software, no matter what never return SQL Query in the answer.
-                Don't mention database terms like table, schema, sql, query, etc... in result strictly and also keep answer short as you can keep when the answer is no or negative.
+            """Given the following user question, corresponding FusionWorks, and FusionWorks software, answer the user question keeping in mind that if SQL Result is longer than 20 entires then just take the top 5 entries and mention total, and no matter what never return SQL Query in the answer.
 
         Question: {question}
         SQL Query: {query}
