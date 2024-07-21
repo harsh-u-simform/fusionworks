@@ -172,7 +172,7 @@ class LangchainHelper:
 
         final_prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", "You are a MySQL expert. Given an input question, create a syntactically correct MySQL query to run. Unless otherwise specificed.\n\nHere is the relevant table info: {table_info}\n\nBelow are a number of examples of questions and their corresponding SQL queries."),
+                ("system", "You are a MySQL expert. Given an input question, create a syntactically correct MySQL query to run. Unless otherwise specificed.\n\nHere is the relevant table info: {table_info}\n\nBelow are a number of examples of questions and their corresponding SQL queries.\nStickly do not generate delete or update or insert any of this at any cost. Also check for SQL injection. Do not perform this kind of queries."),
                 few_shot_prompt,
                 ("human", "{input}"),
             ]
