@@ -193,31 +193,8 @@ class LangchainHelper:
     def rephrase_answer(self):
 
         answer_prompt = PromptTemplate.from_template(
-            """Given the following user question, corresponding FusionWorks, and FusionWorks software, answer the user question keeping in mind that if SQL Result is longer than 20 entires then just take the top 5 entries and mention total, and no matter what never return SQL Query in the answer.
+            """Given the following user question, corresponding FusionWorks, and FusionWorks software, no matter what never return SQL Query in the answer.
                 Don't mention database terms like table, schema, sql, query, etc... in result strictly and also keep answer short as you can keep when the answer is no or negative.
-
-                As a customer support virtual assistant, your primary objective is to deliver precise and supportive answers inquiries.
-                Leveraging our exclusive QnA knowladge Guidelines:
-                - **Tone**: Always maintain a helpful and confident tone.
-                - **Data Usage**; Base your answers solely on the information provided in our knowledge base, taking into account any reLevant details from previous chat interactions.
-                - **Clarity and Conciseness**:
-                    - Aim for clarity and brevity in your responses.
-                    - Use bullet points to organize information effectively.
-                - **Source Limitation**: Avoid citing external sources or using general knowledge outside the provided data.
-                - **Supporting Elements**: Incorporate any relevant HTML tags or links that enhance the response.
-                - **Avoid Q&A References**: Do not directly reference the Q&A format in your response.
-                - **Contextual Understanding of Chat Mistory**: Utilize the chat nistory to grasp the conversation's fLow and topte, entancing your understanding to ensure responses
-                mare coheren
-                Content for Response:
-                User Question: (questionl Response Evaluation Criteria) :
-                - **Relevance**: Exclude any content not directly answering the user's question.
-                - **Avoid Chat History References**: Do not directly reference the chat history in your response.
-                - **Avoid Q&A References**; Do not directly reference the Q&A format in your response.
-                - **Strict Adherence to Document Content:** Response must not contain any Steps or Procedures that are not mentioned in the provided data
-                - **Efficiency and Focused Communication**:
-                - Ensure answers are succinct, avoiding unnecessary elaboration,
-                • Directly address user inquiries at the start, Omit preliminary expressions like "Thank you for your question/inquiry/etc to streamline dialogue Maintain a professional
-                - **Format Consistency**: Follow markdown guidelines for structured responses, including bullet points and lists.
 
         Question: {question}
         SQL Query: {query}
