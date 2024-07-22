@@ -104,15 +104,19 @@ class LangchainHelper:
 
         chats = MessagingHistory().get_chats(request)
 
-        for chat in chats:
-            if chat['sender'] == 'Human':
-                history.add_user_message(chat['message'])
-            else:
-                history.add_ai_message(chat['message'])
+        if chats is not None:
+            for chat in chats:
+                if chat['sender'] == 'Human':
+                    history.add_user_message(chat['message'])
+                else:
+                    history.add_ai_message(chat['message'])
 
         response = chain.invoke({"question": prompt,"messages":history.messages})
 
-        MessagingHistory().add_new_chat(request, prompt, response)
+        try:
+            MessagingHistory().add_new_chat(request, prompt, response)
+        except BaseException as e:
+            pass
 
         return {
             "response": response,
